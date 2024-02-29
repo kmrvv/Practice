@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+  <title>User Add</title>
+
+  <link rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+
+</head>
+
+<body>
+<div class="container">
+  <h1>User Add</h1>
+  <hr>
+  <h2>Save User</h2>
+
+  <form action="#" th:action="@{/users/saveUser}" th:object="${user}" method="POST">
+    <input type="text" th:field="*{name}" placeholder="User name" class="form-control mb-4 col-4">
+
+    <input type="text" th:field="*{email}" placeholder="User email" class="form-control mb-4 col-4">
+
+    <input type="text" th:field="*{password}" placeholder="User password" class="form-control mb-4 col-4">
+    <select th:field="*{role}" class="form-control mb-4 col-4">
+      <option th:value="'Buyer'" th:text="Buyer"></option>
+      <option th:value="'Salesman'" th:text="Salesman"></option>
+      <option th:value="'Admin'" th:text="Admin"></option>
+    </select>
+
+<!--    <label for="role">Выберите роль:</label>-->
+<!--    <select id="role" name="role" th:field="*{role}">-->
+<!--      <option value="true" th:selected="${user.role}">Продавец</option>-->
+<!--      <option value="false" th:selected="${!user.role}">Покупатель</option>-->
+<!--    </select>-->
+
+    <button type="submit" class="btn btn-info col-2"> Save User</button>
+  </form>
+
+  <hr>
+
+  <a th:href="@{~/users}"> Back to User List</a>
+</div>
+</body>
+</html>
