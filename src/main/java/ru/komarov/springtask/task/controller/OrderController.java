@@ -23,9 +23,9 @@ public class OrderController {
 
     @GetMapping("cart")
     public String showCard(@AuthenticationPrincipal MyUserDetails userDetails, Model model) {
-//        model.addAttribute("order", ordersService.createOrder());
         model.addAttribute("c", ordersService.getUserActiveGoods(userDetails.getUserId()));
-//        model.addAttribute("orders", ordersService.getUserActiveOrders(userDetails.getUserId()));
+        model.addAttribute("history", ordersService.getUserHistory(userDetails.getUserId()));
+        model.addAttribute("dates", ordersService.getDateOfPurchase(userDetails.getUserId()));
         return "orders/cart";
     }
 
@@ -57,6 +57,12 @@ public class OrderController {
     @PostMapping("cart/deleteCart")
     public String deleteCart(@AuthenticationPrincipal MyUserDetails userDetails) {
         ordersService.deleteCart(userDetails);
+        return "redirect:/cart";
+    }
+
+    @PostMapping("cart/buyCart")
+    public String buyCart(@AuthenticationPrincipal MyUserDetails userDetails) {
+        ordersService.buyCard(userDetails);
         return "redirect:/cart";
     }
 }

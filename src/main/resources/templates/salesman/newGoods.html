@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Goods Add</title>
+
+  <link rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+
+</head>
+
+<body>
+<div class="container">
+  <h1>Goods Add</h1>
+  <hr>
+  <h2>Save goods</h2>
+
+  <form action="#" th:action="@{/goods/saveGoods}" th:object="${goods}" method="POST">
+
+<!--    <input type="hidden" th:value="${goods.salesmanID}" id="salesmanID" name="salesmanID"/>-->
+
+    <input type="text" th:field="*{name}" placeholder="Name" class="form-control mb-4 col-4">
+
+    <input type="text" th:field="*{description}" placeholder="Description" class="form-control mb-4 col-4">
+
+    <input type="text" th:field="*{price}" placeholder="Price" class="form-control mb-4 col-4">
+
+    <button type="submit" class="btn btn-info col-2"> Save Goods</button>
+  </form>
+
+  <hr>
+
+  <a th:href="@{~/goods/showSalesman}"> Back to goods</a>
+</div>
+</body>
+</html>

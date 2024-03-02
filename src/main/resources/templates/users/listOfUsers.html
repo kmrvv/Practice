@@ -13,6 +13,7 @@
     <div class="container my-2">
         <h1>Users List</h1>
         <a th:href = "@{~/users/newUser}" class="btn btn-primary btn-sm mb-3"> Add User </a>
+        <a th:href="@{~/goods}"> Back to goods</a>
 
         <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></li>
         </ul>

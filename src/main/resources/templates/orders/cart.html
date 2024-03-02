@@ -161,6 +161,25 @@
       row-gap: 40px; /* Отступ между рядами */
       margin: 0 auto;
     }
+    .cards_h {
+      display: grid;
+      /* Автоматически заполняем на всю ширину grid-контейнера */
+      grid-template-columns: repeat(auto-fill, 230px);
+      width: 100%;
+      max-width: 1500px; /* Ширина grid-контейнера */
+      justify-content: start;
+      justify-items: start; /* Размещаем карточку по центру */
+      column-gap: 30px; /* Отступ между колонками */
+      row-gap: 40px; /* Отступ между рядами */
+      margin-left: auto;
+      position: relative;
+    }
+
+    .cards_h::after {
+      content: '';
+      grid-column: 1 / -1; /* Занимает все столбцы */
+      height: 40px; /* Высота отступа */
+    }
   </style>
 
 </head>
@@ -175,16 +194,19 @@
 
 <div>
   <a th:href="@{~/goods}"> Back to goods</a>
-  <h1>Cart:</h1>
-  <a th:href = "@{~/cart/newOrder}" class="btn btn-primary btn-sm mb-3"> Add Goods </a>
+<!--  <a th:href = "@{~/cart/newOrder}" class="btn btn-primary btn-sm mb-3"> Add Goods </a>-->
 </div>
 <div>
   <h1></h1>
+  <form th:action="@{~/cart/buyCart}" method="POST">
+    <button type="submit" class="btn btn-primary btn-sm mb-3"> Buy Cart </button>
+  </form>
   <form th:action="@{~/cart/deleteCart}" method="POST">
     <button type="submit" class="btn btn-primary btn-sm mb-3"> Delete Cart </button>
   </form>
+  <h1>Cart:</h1>
 </div>
-<div class="cards">
+<div class="cards_h">
   <div th:each="goods, iterStat : ${c}" class="card">
     <!-- Верхняя часть -->
     <!--    <div class="card__top">-->
@@ -230,6 +252,32 @@
 
     </div>
   </div>
+  <h1></h1>
 </div>
+
+<h1>Purchase history</h1>
+
+<div th:each="orders, ordersIndex : ${history}">
+  <h1>Order:</h1>
+  <div>
+    <div th:text="${dates[__${ordersIndex.index}__]}"></div>
+  </div>
+  <div class="cards_h" >
+    <div th:each="goods : ${orders}" class="card">
+      <!-- Нижняя часть -->
+      <div class="card__bottom">
+        <!-- Цены на товар (с учетом скидки и без)-->
+        <div class="card__prices">
+          <div class="card__price card__price--common " th:text="${goods.price}"></div>
+        </div>
+        <!-- Ссылка-название товара -->
+        <a href="#" class="card__title" th:text="${goods.name}">
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 </body>
 </html>

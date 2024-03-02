@@ -81,7 +81,7 @@
 
         .card__price::after {
             content: "₽";
-            margin-left: 4px;
+            margin-left: 6px;
             position: relative;
         }
 
@@ -110,7 +110,7 @@
         }
 
         .card__price--common::before {
-            content: "Обычная";
+            content: "Price: ";
             font-weight: 400;
             font-size: 13px;
             color: #bfbfbf;
@@ -161,6 +161,25 @@
             row-gap: 40px; /* Отступ между рядами */
             margin: 0 auto;
         }
+        .cards_h {
+            display: grid;
+            /* Автоматически заполняем на всю ширину grid-контейнера */
+            grid-template-columns: repeat(auto-fill, 230px);
+            width: 100%;
+            max-width: 1500px; /* Ширина grid-контейнера */
+            justify-content: start;
+            justify-items: start; /* Размещаем карточку по центру */
+            column-gap: 30px; /* Отступ между колонками */
+            row-gap: 40px; /* Отступ между рядами */
+            margin-left: auto;
+            position: relative;
+        }
+
+        .cards_h::after {
+            content: '';
+            grid-column: 1 / -1; /* Занимает все столбцы */
+            height: 40px; /* Высота отступа */
+        }
     </style>
 
 </head>
@@ -170,62 +189,47 @@
 <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></li>
 </ul>
 
-<div th:if="${userDetails.role == 'SALESMAN'}">
-<h1>Goods:</h1>
-<a th:href = "@{~/goods/showSalesman}" class="btn btn-primary btn-sm mb-3"> list of Goods </a>
-</div>
 
-<div th:if="${userDetails.role == 'USER'}">
-    <h1>Cart</h1>
-    <a th:href = "@{~/cart}" class="btn btn-primary btn-sm mb-3"> Cart page </a>
-</div>
 
-<div th:if="${userDetails.role == 'ADMIN'}">
-    <h1>User list</h1>
-    <a th:href = "@{~/users}" class="btn btn-primary btn-sm mb-3"> Users </a>
-</div>
 
 <div>
+    <a th:href="@{~/goods}"> Back to goods</a>
+    <!--  <a th:href = "@{~/cart/newOrder}" class="btn btn-primary btn-sm mb-3"> Add Goods </a>-->
+</div>
+<div>
     <h1></h1>
-<!--    <a th:href = "@{~/cart/newOrder}" class="btn btn-primary btn-sm mb-3"> Add to cart </a>-->
+<!--    <form th:action="@{~/cart/buyCart}" method="POST">-->
+<!--        <button type="submit" class="btn btn-primary btn-sm mb-3"> Buy Cart </button>-->
+<!--    </form>-->
+<!--    <form th:action="@{~/cart/deleteCart}" method="POST">-->
+<!--        <button type="submit" class="btn btn-primary btn-sm mb-3"> Delete Cart </button>-->
+    </form>
+    <h1>Your goods:</h1>
+    <a th:href = "@{~/goods/newGoods}" class="btn btn-primary btn-sm mb-3"> Add goods </a>
 </div>
 
-<div class="cards">
-<div th:each="goods : ${listOfGoods}" class="card">
-    <!-- Верхняя часть -->
-<!--    <div class="card__top">-->
-<!--        &lt;!&ndash; Изображение-ссылка товара &ndash;&gt;-->
-<!--        <a href="#" class="card__image">-->
-<!--            <img-->
-<!--                    src="./image/iphone-14-pro-max-gold.png"-->
-<!--                    alt="Apple IPhone 14 PRO Max Gold"-->
-<!--            />-->
-<!--        </a>-->
-<!--        &lt;!&ndash; Скидка на товар &ndash;&gt;-->
-<!--        <div class="card__label">-10%</div>-->
-<!--    </div>-->
-    <!-- Нижняя часть -->
-    <div class="card__bottom">
-        <!-- Цены на товар (с учетом скидки и без)-->
-        <div class="card__prices">
-<!--            <div class="card__price card__price&#45;&#45;discount">135 000</div>-->
-            <div class="card__price card__price--common " th:text="${goods.price}"></div>
+<div class="cards" >
+    <div class="card" th:each="goods : ${goodsList}">
+        <!-- Нижняя часть -->
+        <div class="card__bottom">
+            <!-- Цены на товар (с учетом скидки и без)-->
+            <div class="card__prices">
+                <div class="card__price card__price--common " th:text="${goods.price}"></div>
+            </div>
+            <!-- Ссылка-название товара -->
+            <a href="#" class="card__title" th:text="${goods.name}">
+            </a>
+            <form th:action="@{'/goods/deleteGoods/' + ${goods.id}}" method="POST">
+                <button type="submit" class="btn btn-primary btn-sm mb-3">x</button>
+            </form>
+<!--            <form th:action="@{'/goods/updateGoods/' + ${goods.id}}">-->
+<!--                <button type="submit" class="btn btn-primary btn-sm mb-3">update</button>-->
+<!--            </form>-->
+            <a th:href = "@{'/goods/FormUpdateGoods/' + ${goods.id}}" class="btn btn-primary btn-sm mb-3"> update </a>
         </div>
-        <!-- Ссылка-название товара -->
-        <a href="#" class="card__title" th:text="${goods.name}">
-        </a>
-<!--         Кнопка добавить в корзину -->
-        <form action="#" th:action="@{/cart/saveOrder}" th:object="${order}" method="POST">
-            <!-- Скрытое поле для передачи ID товара -->
-            <input type="hidden" th:value="${goods.id}" id="goodsID" name="goodsID"/>
-<!--            <input type="hidden" th:field="*{goodsID}" th:value="${goods.id}"/>-->
-<!--            <input type="hidden" name="goodsID" value="${goods.id}"/>-->
-
-            <!-- Кнопка добавить в корзину -->
-            <button th:if="${userDetails.role == 'USER'}" type="submit" class="card__add">Add to cart</button>
-        </form>
     </div>
 </div>
-</div>
+
+
 </body>
 </html>

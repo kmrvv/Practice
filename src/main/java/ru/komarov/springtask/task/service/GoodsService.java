@@ -1,7 +1,10 @@
 package ru.komarov.springtask.task.service;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
+import ru.komarov.springtask.task.confing.MyUserDetails;
 import ru.komarov.springtask.task.entity.Goods;
 import ru.komarov.springtask.task.repository.GoodsRepository;
 import java.util.ArrayList;
@@ -12,21 +15,31 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class GoodsService {
     private GoodsRepository goodsRepository;
 
-    public Goods createGoods(Goods goods) {
+    public Goods createGoods(Goods goods, @AuthenticationPrincipal MyUserDetails userDetails) {
+        goods.setSalesmanID(userDetails.getUserId());
         Goods savedGoods = goodsRepository.save(goods);
         return savedGoods;
+    }
+
+    public void save(Goods goods) {
+        goodsRepository.save(goods);
     }
 
     public Goods createGoods() {
         return new Goods();
     }
 
-    public Optional<Goods> getGoodsById(Long goodsId) {
+    public Collection<Goods> getSalesmanGoods(Long salesmanID) {
+        return goodsRepository.findBySalesmanID(salesmanID);
+    }
+
+    public Goods getGoodsById(Long goodsId) {
         Optional<Goods> goods = goodsRepository.findById(goodsId);
-        return goods;
+        return goods.get();
     }
 
     public Collection<Goods> getAllGoods() {
@@ -35,13 +48,18 @@ public class GoodsService {
     }
 
     public Goods updateGoods(Goods goods){
-        Goods existingGoods = goodsRepository.findById(goods.getId()).get();
-        existingGoods.setName(goods.getName());
-        existingGoods.setDescription(goods.getDescription());
-        existingGoods.setCount(goods.getCount());
-        existingGoods.setPrice(goods.getPrice());
-        Goods updateGoods = goodsRepository.save(existingGoods);
-        return updateGoods;
+        Optional<Goods> optionalExistingGoods = goodsRepository.findById(goods.getId());
+        if (optionalExistingGoods.isPresent()) {
+            Goods existingGoods = optionalExistingGoods.get();
+            existingGoods.setName(goods.getName());
+            existingGoods.setSalesmanID(goods.getSalesmanID());
+            existingGoods.setDescription(goods.getDescription());
+            existingGoods.setPrice(goods.getPrice());
+            Goods updatedGoods = goodsRepository.save(existingGoods);
+            return updatedGoods;
+        } else {
+            return null;
+        }
     }
 
     public void deleteGoods(Long goodsId) {

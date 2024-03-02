@@ -13,6 +13,8 @@ import ru.komarov.springtask.task.repository.GoodsRepository;
 import ru.komarov.springtask.task.repository.OrdersRepository;
 import ru.komarov.springtask.task.repository.UserRepository;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -100,15 +102,32 @@ public class OrdersService {
         }
     }
 
-    public void buyCard(@AuthenticationPrincipal MyUserDetails userDetails) { // мб нужно удалить старые и записать новые
+    public void buyCard(@AuthenticationPrincipal MyUserDetails userDetails) {
         Collection<Orders> ordersUser = getUserActiveOrders(userDetails.getUserId());
 
         if (!ordersUser.isEmpty()) {
+            LocalDateTime now = LocalDateTime.now();
+            String formattedDateTime = now.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
             for (Orders order : ordersUser) {
                 order.setStatus(false);
+                order.setDateOfPurchase(formattedDateTime);
                 ordersRepository.save(order);
             }
         }
+    }
+
+    public List<String> getDateOfPurchase(Long userId) {
+        Collection<List<Orders>> userOrders = getUserInactiveOrders(userId);
+
+        List<String> dates = userOrders.stream()
+                .map(orderList -> {
+                    Optional<Orders> firstOrder = orderList.stream().findFirst();
+                    return firstOrder.map(Orders::getDateOfPurchase).orElse("");
+                })
+                .collect(Collectors.toList());
+        Collections.reverse(dates);
+
+        return dates;
     }
 
     public Collection<Goods> getUserActiveGoods(Long userId) {
@@ -127,13 +146,26 @@ public class OrdersService {
                 .collect(Collectors.toList());
     }
 
-    public Collection<Orders> getUserInactiveOrders(Long userId) {
+    public List<List<Goods>> getUserHistory(Long userId) {
+        Collection<List<Orders>> userOrders = getUserInactiveOrders(userId);
+
+        List<List<Goods>> goodsLists = userOrders.stream()
+                .map(orderList -> orderList.stream()
+                        .map(order -> goodsRepository.findById(order.getGoodsID()).get())
+                        .collect(Collectors.toList()))
+                .collect(Collectors.toList());
+        Collections.reverse(goodsLists);
+
+        return goodsLists;
+    }
+
+    public Collection<List<Orders>> getUserInactiveOrders(Long userId) {
         Collection<Orders> allOrders = ordersRepository.findByUserID(userId);
         return allOrders.stream()
                 .filter(order -> !order.getStatus())
-                .collect(Collectors.toList());
+                .collect(Collectors.groupingBy(Orders::getOrderID))
+                .values();
     }
-
 
 }
 

@@ -22,19 +22,19 @@ public class Goods {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "salesmanID")
+    private long salesmanID;
+
     @Column(name = "description")
     private String description;
-
-    @Column(name = "Count")
-    private int count;
 
     @Column(name = "price")
     private float price;
 
-    public Goods(String name, String description, int count, float price) {
+    public Goods(String name, long salesmanID, String description, float price) {
         this.name = name;
+        this.salesmanID = salesmanID;
         this.description = description;
-        this.count = count;
         this.price = price;
     }
 }

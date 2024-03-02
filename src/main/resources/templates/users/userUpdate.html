@@ -25,10 +25,9 @@
     <input type="text" th:field="*{password}" class="form-control mb-4 col-4">
 
     <select th:field="*{role}" class="form-control mb-4 col-4">
-<!--      <option th:value="'Buyer'" th:text="Buyer"></option>-->
-<!--      <option th:value="'Salesman'" th:text="Salesman"></option>-->
       <option th:value="'USER'" th:text="USER"></option>
       <option th:value="'ADMIN'" th:text="ADMIN"></option>
+      <option th:value="'SALESMAN'" th:text="SALESMAN"></option>
     </select>
 
     <button type="submit" class="btn btn-info col-2"> Update User</button>

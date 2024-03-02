@@ -37,7 +37,7 @@ public class UserService implements UserServiceInterface {
                 userRegistration.getName(),
                 userRegistration.getEmail(),
                 passwordEncoder.encode(userRegistration.getPassword()),
-                "USER"
+                userRegistration.getRole()
         );
         return userRepository.save(user);
     }

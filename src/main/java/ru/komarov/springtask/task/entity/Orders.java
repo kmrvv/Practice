@@ -34,11 +34,9 @@ public class Orders {
 
     @Column(name = "Status")
     private Boolean status;
-//    @Column(name = "dateOfPurchase")
-//    private String dateOfPurchase;
-//
-//    @Column(name = "dateOfReceiving")
-//    private String dateOfReceiving;
+
+    @Column(name = "dateOfPurchase")
+    private String dateOfPurchase;
 
     public Orders(long userID, long goodsID, long orderID) {
         this.userID = userID;
