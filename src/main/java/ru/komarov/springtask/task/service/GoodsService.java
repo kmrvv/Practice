@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -45,21 +44,6 @@ public class GoodsService {
     public Collection<Goods> getAllGoods() {
         List<Goods> goods = goodsRepository.findAll();
         return new ArrayList<>(goods);
-    }
-
-    public Goods updateGoods(Goods goods){
-        Optional<Goods> optionalExistingGoods = goodsRepository.findById(goods.getId());
-        if (optionalExistingGoods.isPresent()) {
-            Goods existingGoods = optionalExistingGoods.get();
-            existingGoods.setName(goods.getName());
-            existingGoods.setSalesmanID(goods.getSalesmanID());
-            existingGoods.setDescription(goods.getDescription());
-            existingGoods.setPrice(goods.getPrice());
-            Goods updatedGoods = goodsRepository.save(existingGoods);
-            return updatedGoods;
-        } else {
-            return null;
-        }
     }
 
     public void deleteGoods(Long goodsId) {

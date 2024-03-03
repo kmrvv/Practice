@@ -17,7 +17,7 @@
   <hr>
   <h2>Save goods</h2>
 
-  <form action="#" th:action="@{/goods/updateGoods}" th:object="${goods}" method="POST">
+  <form action="#" th:action="@{/salesman/updateGoods}" th:object="${goods}" method="POST">
 
     <input type="hidden" th:field="*{id}" />
 
@@ -34,7 +34,7 @@
 
   <hr>
 
-  <a th:href="@{~/goods/showSalesman}"> Back to listOfGoods</a>
+  <a th:href="@{~/salesman}"> Back to listOfGoods</a>
 </div>
 </body>
 </html>

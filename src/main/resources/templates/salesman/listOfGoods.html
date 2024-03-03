@@ -186,7 +186,7 @@
 <body>
 <!-- Карточка товара -->
 
-<li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></li>
+<li sec:authorize="isAuthenticated()"><a th:href="@{/logout}" class="btn btn-dark">Logout</a></li>
 </ul>
 
 
@@ -205,7 +205,7 @@
 <!--        <button type="submit" class="btn btn-primary btn-sm mb-3"> Delete Cart </button>-->
     </form>
     <h1>Your goods:</h1>
-    <a th:href = "@{~/goods/newGoods}" class="btn btn-primary btn-sm mb-3"> Add goods </a>
+    <a th:href = "@{~/salesman/newGoods}" class="btn btn-primary btn-sm mb-3"> Add goods </a>
 </div>
 
 <div class="cards" >
@@ -219,13 +219,13 @@
             <!-- Ссылка-название товара -->
             <a href="#" class="card__title" th:text="${goods.name}">
             </a>
-            <form th:action="@{'/goods/deleteGoods/' + ${goods.id}}" method="POST">
-                <button type="submit" class="btn btn-primary btn-sm mb-3">x</button>
+            <form th:action="@{'/salesman/deleteGoods/' + ${goods.id}}" method="POST">
+                <button type="submit" class="btn btn-danger">delete</button>
             </form>
 <!--            <form th:action="@{'/goods/updateGoods/' + ${goods.id}}">-->
 <!--                <button type="submit" class="btn btn-primary btn-sm mb-3">update</button>-->
 <!--            </form>-->
-            <a th:href = "@{'/goods/FormUpdateGoods/' + ${goods.id}}" class="btn btn-primary btn-sm mb-3"> update </a>
+            <a th:href = "@{'/salesman/FormUpdateGoods/' + ${goods.id}}" class="btn btn-secondary"> update </a>
         </div>
     </div>
 </div>

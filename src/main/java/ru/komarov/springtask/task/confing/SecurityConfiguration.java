@@ -32,6 +32,8 @@ public class SecurityConfiguration {
 
                         authorize
                                 .requestMatchers("/users/**").hasAuthority("ADMIN")
+                                .requestMatchers("/cart/**").hasAuthority("USER")
+                                .requestMatchers("/salesman/**").hasAuthority("SALESMAN")
                                 .requestMatchers("/goods/**").hasAnyAuthority("ADMIN", "USER", "SALESMAN")
                                 .requestMatchers("/login/**").permitAll()
                                 .requestMatchers("/registration/**").permitAll()
@@ -39,6 +41,7 @@ public class SecurityConfiguration {
                 ).formLogin(
                         form -> form
                                 .loginPage("/login")
+                                .defaultSuccessUrl("/goods")
                 ).logout(
                         logout -> logout
                                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))

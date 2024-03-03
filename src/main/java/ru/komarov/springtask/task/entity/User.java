@@ -1,8 +1,6 @@
 package ru.komarov.springtask.task.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,12 +38,5 @@ public class User {
         this.email = email;
         this.password = password;
         this.role = role;
-    }
-
-    public UserResponse mapToDtoResponse() {
-        return new UserResponse(this.id, this.name, this.email, this.password, this.role);
-    }
-    public UserRequest mapToDtoRequest() {
-        return new UserRequest(this.name, this.email, this.password, this.role);
     }
 }

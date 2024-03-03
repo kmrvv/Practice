@@ -15,7 +15,7 @@
         <a th:href = "@{~/users/newUser}" class="btn btn-primary btn-sm mb-3"> Add User </a>
         <a th:href="@{~/goods}"> Back to goods</a>
 
-        <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></li>
+        <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}" class="btn btn-dark">Logout</a></li>
         </ul>
 
         <table border="1" class = "table table-striped table-responsive-md">
@@ -34,7 +34,7 @@
                 <td th:text="${user.email}"></td>
                 <td th:text="${user.password}"></td>
                 <td th:text="${user.role}"></td>
-                <td><a th:href="@{~/users/newUser/{id}(id=${user.id})}" class="btn btn-primary">Update</a>
+                <td><a th:href="@{~/users/newUser/{id}(id=${user.id})}" class="btn btn-secondary">Update</a>
                      <a th:href="@{~/users/deleteUser/{id}(id=${user.id})}" class="btn btn-danger">Delete</a>
                 </td>
             </tr>

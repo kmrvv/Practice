@@ -13,14 +13,4 @@ public class UserMapper {
                 user.getRole()
         );
     }
-
-    public static User mapToUser(UserResponse userDto) {
-        return new User(
-                userDto.getId(),
-                userDto.getName(),
-                userDto.getEmail(),
-                userDto.getPassword(),
-                userDto.getRole()
-        );
-    }
 }

@@ -19,15 +19,6 @@ public class UserRegistration {
 
     @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{4,20}$")
     private String password;
+
     private String role;
-
-    public UserRegistration(String name, String email, String password, String role) {
-        super();
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.role = role;
-    }
 }
-
-

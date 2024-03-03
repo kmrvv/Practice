@@ -29,37 +29,16 @@ public class OrdersService {
         ordersRepository.save(orders);
     }
 
-//    public Orders createOrder(@AuthenticationPrincipal MyUserDetails userDetails, Long goodsID) {
-//        Collection<Orders> ordersUser = getUserActiveOrders(userDetails.getUserId());
-//        Orders savedOrder;
-//
-//        if (ordersUser.isEmpty()) {
-//            Random random = new Random();
-//            savedOrder = ordersRepository.save(new Orders(userDetails.getUserId(), goodsID, random.nextLong()));
-//        } else {
-//            Orders order = new ArrayList<>(ordersUser).get(0);
-//            savedOrder = ordersRepository.save(new Orders(userDetails.getUserId(), goodsID, order.getOrderID()));
-//        }
-//        return savedOrder;
-//    }
     public Orders createOrder(){
         return new Orders();
     }
 
     public void setOrder(@AuthenticationPrincipal MyUserDetails userDetails, Orders orders, boolean status) {
-//        if (userDetails.getUserId() == 0) {
-//            log.info("userDetails return null");
-//            return null;
-//        }
         Collection<Orders> ordersUser = getUserActiveOrders(userDetails.getUserId());
-//        Orders ord;
 
         if (ordersUser.isEmpty()) {
-            log.info("========================================================");
             Collection<Orders> ordersList = ordersRepository.findAll();
-            log.info(String.format("size list %d", ordersList.size()));
             if (ordersList.isEmpty()) {
-                log.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++");
                 orders.setUserID(userDetails.getUserId());
                 orders.setStatus(status);
                 orders.setOrderID(1);
@@ -67,24 +46,16 @@ public class OrdersService {
                 long maxOrderId = ordersList.stream()
                         .map(Orders::getOrderID)
                         .max(Long::compare).get();
-
                 orders.setUserID(userDetails.getUserId());
                 orders.setStatus(status);
                 orders.setOrderID(++maxOrderId);
             }
         } else {
-            log.info("--------------------------------------------------");
             Orders order = ordersUser.iterator().next();
             orders.setUserID(userDetails.getUserId());
             orders.setStatus(status);
             orders.setOrderID(order.getOrderID());
-//            ord = new Orders(userDetails.getUserId(), order.getOrderID());
         }
-//        log.info(String.format("ordersID: %d userID: %d", ord.getOrderID(), ord.getUserID()));
-
-//        ord = new Orders(userDetails.getUserId(), 1);
-
-//        return ord;
     }
 
     public void deleteOrder(@AuthenticationPrincipal MyUserDetails userDetails, int index) {
@@ -133,9 +104,9 @@ public class OrdersService {
     public Collection<Goods> getUserActiveGoods(Long userId) {
         Collection<Orders> orders = getUserActiveOrders(userId);
         return orders.stream()
-                .map(order -> goodsRepository.findById(order.getGoodsID()))
-                .filter(Optional::isPresent)
-                .map(Optional::get)
+                .map(order -> goodsRepository.findById(order.getGoodsID())
+                        .orElse(null))
+                .filter(Objects::nonNull)
                 .collect(Collectors.toList());
     }
 
@@ -151,7 +122,9 @@ public class OrdersService {
 
         List<List<Goods>> goodsLists = userOrders.stream()
                 .map(orderList -> orderList.stream()
-                        .map(order -> goodsRepository.findById(order.getGoodsID()).get())
+                        .map(order -> goodsRepository.findById(order.getGoodsID())
+                                .orElse(null))
+                        .filter(Objects::nonNull)
                         .collect(Collectors.toList()))
                 .collect(Collectors.toList());
         Collections.reverse(goodsLists);

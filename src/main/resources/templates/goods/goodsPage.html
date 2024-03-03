@@ -110,8 +110,8 @@
         }
 
         .card__price--common::before {
-            content: "Обычная";
-            font-weight: 400;
+            content: "Price:";
+            font-weight: 500;
             font-size: 13px;
             color: #bfbfbf;
         }
@@ -167,12 +167,12 @@
 <body>
 <!-- Карточка товара -->
 
-<li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></li>
+<li sec:authorize="isAuthenticated()"><a th:href="@{/logout}" class="btn btn-dark">Logout</a></li>
 </ul>
 
 <div th:if="${userDetails.role == 'SALESMAN'}">
 <h1>Goods:</h1>
-<a th:href = "@{~/goods/showSalesman}" class="btn btn-primary btn-sm mb-3"> list of Goods </a>
+<a th:href = "@{~/salesman}" class="btn btn-primary btn-sm mb-3"> list of Goods </a>
 </div>
 
 <div th:if="${userDetails.role == 'USER'}">

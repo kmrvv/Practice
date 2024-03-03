@@ -16,8 +16,4 @@ public class UserRequest {
     private String password;
 
     private String role;
-
-    public User mapToUser() {
-        return new User(name, email, password, role);
-    }
 }

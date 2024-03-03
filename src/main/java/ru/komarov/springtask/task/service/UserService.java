@@ -18,12 +18,12 @@ import ru.komarov.springtask.task.repository.UserRepository;
 
 import java.util.*;
 import java.util.stream.Collectors;
+
 @Service
 @Slf4j
 public class UserService implements UserServiceInterface {
     private UserRepository userRepository;
     private BCryptPasswordEncoder passwordEncoder;
-
 
     public UserService(UserRepository userRepository, @Lazy BCryptPasswordEncoder passwordEncoder) {
         super();
@@ -48,36 +48,16 @@ public class UserService implements UserServiceInterface {
             log.info("Username return null");
             return null;
         }
-//        List<User> users = userRepository.findAll().stream().filter(user -> user.getEmail().equals(username)).toList();
-//        User user = null;
-//        for (User u: users) {
-//            if (u.getEmail().equals(username)){
-//                user = u;
-//                break;
-//            }
-//        }
-//        User user = users.get(0);
-//        if (user == null) {
-//            throw new UsernameNotFoundException("User null.");
-//        }
-//        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), mapRoleToAuthorities(user.getRole()));
-
         Optional<User> user = userRepository.findByEmail(username);
         if (user.isEmpty()) {
             throw new UsernameNotFoundException("User is null.");
         }
-
-
         return new MyUserDetails(user.get(), mapRoleToAuthorities(user.get().getRole()));
-//        return new org.springframework.security.core.userdetails.User(user.get().getEmail(),user.get().getPassword(), mapRoleToAuthorities(user.get().getRole()));
     }
 
     private Collection<? extends GrantedAuthority> mapRoleToAuthorities(String role) {
         return Collections.singletonList(new SimpleGrantedAuthority(role));
     }
-
-
-
 
     public User createUser(User user) {
         User savedUser = userRepository.save(user);
@@ -100,21 +80,7 @@ public class UserService implements UserServiceInterface {
         return users.stream().map(UserMapper::mapToUserDto).collect(Collectors.toList());
     }
 
-    public UserResponse updateUser(UserResponse user) {
-        User existingUser = userRepository.findById(user.getId()).get();
-        existingUser.setName(user.getName());
-        existingUser.setEmail(user.getEmail());
-        existingUser.setPassword(user.getPassword());
-        existingUser.setRole(user.getRole());
-        User updateUser = userRepository.save(existingUser);
-        return UserMapper.mapToUserDto(updateUser);
-    }
-
     public void deleteUser(Long userId) {
         userRepository.deleteById(userId);
-    }
-
-    public void deleteAllUsers() {
-        userRepository.deleteAll();
     }
 }

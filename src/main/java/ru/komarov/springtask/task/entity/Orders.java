@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Random;
 
 @Entity
 @Table(name = "Orders")
@@ -29,28 +28,10 @@ public class Orders {
     @Column(name = "goodsID")
     private long goodsID;
 
-//    @Column(name = "countOfGoods")
-//    private long countOfGoods;
-
     @Column(name = "Status")
     private Boolean status;
 
     @Column(name = "dateOfPurchase")
     private String dateOfPurchase;
 
-    public Orders(long userID, long goodsID, long orderID) {
-        this.userID = userID;
-        this.orderID = orderID;
-        this.goodsID = goodsID;
-//        this.countOfGoods = 0;
-        this.status = true;
-//        this.dateOfPurchase = dateOfPurchase;
-//        this.dateOfReceiving = dateOfReceiving;
-    }
-
-    public Orders(long userID, long orderID) {
-        this.userID = userID;
-        this.orderID = orderID;
-        this.status = true;
-    }
 }

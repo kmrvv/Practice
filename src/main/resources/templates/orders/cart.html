@@ -186,7 +186,7 @@
 <body>
 <!-- Карточка товара -->
 
-<li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></li>
+<li sec:authorize="isAuthenticated()"><a th:href="@{/logout}" class="btn btn-dark">Logout</a></li>
 </ul>
 
 
@@ -199,10 +199,10 @@
 <div>
   <h1></h1>
   <form th:action="@{~/cart/buyCart}" method="POST">
-    <button type="submit" class="btn btn-primary btn-sm mb-3"> Buy Cart </button>
+    <button type="submit" class="btn btn-success"> Buy Cart </button>
   </form>
   <form th:action="@{~/cart/deleteCart}" method="POST">
-    <button type="submit" class="btn btn-primary btn-sm mb-3"> Delete Cart </button>
+    <button type="submit" class="btn btn-danger"> Delete Cart </button>
   </form>
   <h1>Cart:</h1>
 </div>
@@ -243,7 +243,7 @@
 <!--        <form th:each="ord : ${orders}" th:action="@{/card/deleteOrder/__${#strings.toString(ord.id)}__}" method="POST">-->
         <form th:action="@{/cart/deleteOrder/__${#numbers.sequence(1, c.size(), 1)[iterStat.index]}__}" method="POST">
 <!--            <input type="hidden" th:value="${ord.id}" name="id"/>-->
-            <button type="submit" class="card__label">x</button>
+            <button type="submit" class="btn btn-danger">x</button>
         </form>
       <!-- Кнопка добавить в корзину -->
       <!--        <button data-id="${goods.id}" class="card__add">В корзину</button>-->
