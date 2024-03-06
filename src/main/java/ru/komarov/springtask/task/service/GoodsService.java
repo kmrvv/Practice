@@ -1,7 +1,6 @@
 package ru.komarov.springtask.task.service;
 
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import ru.komarov.springtask.task.confing.MyUserDetails;
@@ -12,9 +11,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
+
 @Service
 @AllArgsConstructor
-@Slf4j
 public class GoodsService {
     private GoodsRepository goodsRepository;
 
